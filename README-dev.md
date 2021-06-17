@@ -18,6 +18,7 @@
 ## install kuflow
 
     while ! kustomize build example | kubectl apply -f -; do echo "Retrying to apply resources"; sleep 10; done
+    while ! kustomize build example | kubectl apply -f -; do echo "Retrying to apply resources"; sleep 10; done
 
 ## quick start
 
@@ -28,6 +29,13 @@
 
 https -> Kubeflow distributions
 
-kustomize build example --load_restrictor=none
+kustomize build example --load_restrictor=none > kustomize-export.yaml
 
+cd example
+python3 doGenerate.py
+python3 doReplace.py
 python3 pre-install.py
+
+kubectl get pods --all-namespaces -o jsonpath="{.items[*].spec.containers[*].image}"
+kubectl get pods --all-namespaces -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' |\
+sort

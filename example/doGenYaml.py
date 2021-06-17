@@ -21,12 +21,14 @@ for path in kustomizefile['resources']:
     abspath = abspath.replace("\\","/")
     filename = "-".join([path.split("/")[2]]+path.split("/")[-2:])
     cmd = "kustomize build --load_restrictor=none {path}".format(path=path)
-    print(cmd)
+    print(" --> cmd: ",cmd)
     p = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
     out = p.stdout.read()
     if out == "":
         raise ValueError(cmd)
     filename = str(n).zfill(3) + "-" + filename +".yaml"
-    out = replaceImage(out.decode("utf-8"))
+    print(" --> filename: ",filename)
+    out = out.decode("utf-8")
+
     with open("file/"+ filename, "w", encoding="utf-8") as fw:
         fw.write(out)
