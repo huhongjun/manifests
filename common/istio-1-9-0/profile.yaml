@@ -107,7 +107,7 @@ spec:
       istioNamespace: istio-system
       istiod:
         enableAnalysis: false
-      jwtPolicy: third-party-jwt
+      jwtPolicy: first-party-jwt
       logAsJson: false
       logging:
         level: default:info
